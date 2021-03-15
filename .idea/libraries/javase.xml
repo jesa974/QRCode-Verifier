@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="javase">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../zxing-zxing-3.4.1/out/artifacts/javase_jar/javase.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

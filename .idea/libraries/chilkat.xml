@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="chilkat">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../chilkatjava-9.5.0-jdk11-x86_64-linux/chilkat.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

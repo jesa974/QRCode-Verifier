@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="jaxp-api">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../jaxp-api.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
