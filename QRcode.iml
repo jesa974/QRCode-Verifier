@@ -13,5 +13,10 @@
     <orderEntry type="library" exported="" name="Java EE 6-Java EE 6" level="project" />
     <orderEntry type="library" exported="" name="jaxp-api" level="project" />
     <orderEntry type="library" name="chilkat" level="project" />
+    <orderEntry type="library" name="chilkat-9.5" level="application" />
+    <orderEntry type="library" name="com.google.zxing:core:3.4.1" level="application" />
+    <orderEntry type="library" name="com.google.zxing:javase:3.4.1" level="application" />
+    <orderEntry type="library" name="org.bouncycastle:bcprov-jdk16:1.46" level="application" />
+    <orderEntry type="library" name="commons-codec:commons-codec:1.15" level="application" />
   </component>
 </module>
