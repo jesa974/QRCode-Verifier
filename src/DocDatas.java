@@ -11,7 +11,7 @@ public class DocDatas {
             new DataStruct(
                     "Identifiant unique du document",
                     0,
-                    null)
+                    Integer.MAX_VALUE)
         );
 
         datas.put(
@@ -19,7 +19,7 @@ public class DocDatas {
                 new DataStruct(
                         "Catégorie de document",
                         0,
-                        null)
+                        Integer.MAX_VALUE)
         );
 
         datas.put(
@@ -27,7 +27,7 @@ public class DocDatas {
                 new DataStruct(
                         "Sous-catégorie de document",
                         0,
-                        null)
+                        Integer.MAX_VALUE)
         );
 
 
@@ -36,7 +36,7 @@ public class DocDatas {
                 new DataStruct(
                         "Application de composition",
                         0,
-                        null)
+                        Integer.MAX_VALUE)
         );
 
         datas.put(
@@ -44,7 +44,7 @@ public class DocDatas {
                 new DataStruct(
                         "Version de l’application de composition",
                         0,
-                        null)
+                        Integer.MAX_VALUE)
         );
 
         datas.put(
@@ -100,7 +100,7 @@ public class DocDatas {
                 new DataStruct(
                         "URL du document",
                         0,
-                        null)
+                        Integer.MAX_VALUE)
         );
 
         datas.put(
@@ -172,7 +172,7 @@ public class DocDatas {
                 new DataStruct(
                         "Numéro de la facture",
                         0,
-                        null)
+                        Integer.MAX_VALUE)
         );
 
         datas.put(
@@ -180,7 +180,7 @@ public class DocDatas {
                 new DataStruct(
                         "Numéro de client",
                         0,
-                        null)
+                        Integer.MAX_VALUE)
         );
 
         datas.put(
@@ -188,7 +188,7 @@ public class DocDatas {
                 new DataStruct(
                         "Numéro du contrat",
                         0,
-                        null)
+                        Integer.MAX_VALUE)
         );
 
         datas.put(
@@ -196,7 +196,7 @@ public class DocDatas {
                 new DataStruct(
                         "Identifiant du souscripteur du contrat",
                         0,
-                        null)
+                        Integer.MAX_VALUE)
         );
 
         datas.put(
@@ -524,7 +524,7 @@ public class DocDatas {
                 new DataStruct(
                         "Revenu fiscal de référence",
                         0,
-                        null)
+                        Integer.MAX_VALUE)
         );
 
         datas.put(
@@ -532,7 +532,7 @@ public class DocDatas {
                 new DataStruct(
                         "Situation du foyer",
                         0,
-                        null)
+                        Integer.MAX_VALUE)
         );
 
         datas.put(
@@ -540,7 +540,7 @@ public class DocDatas {
                 new DataStruct(
                         "Nombre de parts",
                         0,
-                        null)
+                        Integer.MAX_VALUE)
         );
 
         datas.put(

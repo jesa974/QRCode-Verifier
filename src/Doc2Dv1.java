@@ -74,7 +74,7 @@ public class Doc2Dv1 {
             data.name = dataStruct.name;
 
             String value = "";
-            for (int j = 0; j < ((dataStruct.maxSize == null)?Integer.MAX_VALUE:dataStruct.maxSize); j++) {
+            for (int j = 0; j < dataStruct.maxSize; j++) {
                 if(this.rawDatas.getBytes(StandardCharsets.UTF_8)[i+2+j] == 29 || this.rawDatas.getBytes(StandardCharsets.UTF_8)[i+2+j] == 30){
                     i = i+2+j;
                     break;
