@@ -92,13 +92,15 @@ public class CA {
         return certificate;
     }
 
-    public static boolean isRevoked(X509Certificate certificate) throws IOException, CertificateException, CRLException {
+    public boolean isRevoked(X509Certificate issuerCertificate) throws IOException, CertificateException, CRLException {
 
         X509CRLEntry revokedCertificate = null;
         CertificateFactory cf = CertificateFactory.getInstance("X509");
         X509CRL crl = null;
 
-        ASN1InputStream oAsnInStream = new ASN1InputStream(new ByteArrayInputStream(certificate.getExtensionValue(X509Extensions.CRLDistributionPoints.getId())));
+        if(this.caCert.getExtensionValue(X509Extensions.CRLDistributionPoints.getId()) == null)
+            throw new CRLException("Point de distrution CRL non présent dans le cert");
+        ASN1InputStream oAsnInStream = new ASN1InputStream(new ByteArrayInputStream(this.caCert.getExtensionValue(X509Extensions.CRLDistributionPoints.getId())));
         DERObject derObjCrlDP = oAsnInStream.readObject();
         DEROctetString dosCrlDP = (DEROctetString) derObjCrlDP;
         byte[] crldpExtOctets = dosCrlDP.getOctets();
@@ -145,18 +147,27 @@ public class CA {
             }
         }
 
-        revokedCertificate = crl.getRevokedCertificate(certificate.getSerialNumber());
+        revokedCertificate = crl.getRevokedCertificate(issuerCertificate.getSerialNumber());
 
         if(revokedCertificate !=null){
             return true;
         }
         else{
             try{
-                certificate.checkValidity();
+                issuerCertificate.checkValidity();
                 return false;
             }catch (CertificateExpiredException | CertificateNotYetValidException e){
                 return true;
             }
+        }
+    }
+
+    public static boolean checkValidity(X509Certificate certificate){
+        try{
+            certificate.checkValidity();
+            return true;
+        } catch (CertificateNotYetValidException | CertificateExpiredException e) {
+            return false;
         }
     }
 

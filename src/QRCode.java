@@ -60,10 +60,13 @@ public class QRCode {
 
         /** NOTE : Code basé sur les 'Spécifications techniques des codes à barres 2D-Doc' Version: 3.1.1 de l'ANTS **/
 
-        String filePath = "./res/2Ddoc.png";
+        String filePath = "./res/facturesfr.JPG";
         Map<EncodeHintType, ErrorCorrectionLevel> hintMap = new HashMap<>();
         hintMap.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);
 
+        /***
+         * 2D-Doc
+         */
         Doc2Dv1 doc;
         try {
             doc = new Doc2Dv1(filePath, hintMap);
@@ -88,17 +91,32 @@ public class QRCode {
             }
         }
 
+        /**
+         * CA
+         */
         //Retrieve CA trusted list
         String xmlFileName = "./res/TSL.xml";
         CA ca = new CA(doc.getCaID(),xmlFileName);
 
         //Check if the CA cert is revoked
-        System.out.println("Is CA revoked (CRL + Validity period) ? : " + CA.isRevoked(ca.getCaCert()));
+        try{
+            System.out.println("Is CA revoked (CRL + Validity period) ? : " + ca.isRevoked(ca.getCaCert())); //Self signed
+        }catch (CRLException e){
+            System.out.println("Note: CRL Distribution Point not present in CA cert, not able to verify if revoked.");
+            System.out.println("Is CA validity period still valid ? : " + CA.checkValidity(ca.getCaCert()));
+        }
+
 
         //Get from CA repository the certificate that have signed the document
         X509Certificate participantCert = getcert(doc.getCertID(),ca.getCaRepoUrls().get(0));
-        //Check if he is revoked
-        System.out.println("Is Participant revoked (CRL + Validity period) ? : " + CA.isRevoked(participantCert));
+
+        //Check if participant cert is revoked
+        try{
+            System.out.println("Is Participant revoked (CRL + Validity period) ? : " + ca.isRevoked(participantCert));
+        }catch (CRLException e){
+            System.out.println("Note: CRL Distribution Point not present in participant cert, not able to verify if revoked.");
+            System.out.println("Is participant validity period still valid ? : " + CA.checkValidity(participantCert));
+        }
 
         Base32 base32 = new Base32();
         byte[] signature = base32.decode(doc.getRawSignature());
