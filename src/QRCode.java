@@ -60,7 +60,7 @@ public class QRCode {
 
         /** NOTE : Code basé sur les 'Spécifications techniques des codes à barres 2D-Doc' Version: 3.1.1 de l'ANTS **/
 
-        String filePath = "./res/facturesfr.JPG";
+        String filePath = "./res/bouyguestelecomfacture2DDOC.jpg";
         Map<EncodeHintType, ErrorCorrectionLevel> hintMap = new HashMap<>();
         hintMap.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);
 
@@ -97,6 +97,7 @@ public class QRCode {
         //Retrieve CA trusted list
         String xmlFileName = "./res/TSL.xml";
         CA ca = new CA(doc.getCaID(),xmlFileName);
+        System.out.println("CA name: " + doc.getCaID());
 
         //Check if the CA cert is revoked
         try{
@@ -109,6 +110,7 @@ public class QRCode {
 
         //Get from CA repository the certificate that have signed the document
         X509Certificate participantCert = getcert(doc.getCertID(),ca.getCaRepoUrls().get(0));
+        System.out.println("Participant name: " + doc.getCertID());
 
         //Check if participant cert is revoked
         try{
