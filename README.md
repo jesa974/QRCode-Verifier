@@ -1,6 +1,6 @@
 # QRCode-Verifier
 
-How to add the libraries to the projet ?
+How to add the libraries to the project ?
 
     Step 1 - File -> Project Structure -> Librairies -> + (New project library)
     Step 2 - Select all the .jar and click OK
