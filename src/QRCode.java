@@ -12,6 +12,10 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import com.spire.pdf.PdfDocument;
+import com.spire.pdf.PdfPageBase;
+import java.util.ArrayList;
+
 import org.bouncycastle.asn1.x509.CRLDistPoint;
 import org.bouncycastle.asn1.x509.DistributionPoint;
 import org.bouncycastle.asn1.x509.DistributionPointName;
@@ -171,5 +175,37 @@ public class QRCode {
         }
 
         return cert;
+    }
+    
+    // Récupération du 2D Doc en PNG
+    public static void extractImgFromPDF() throws IOException {
+        //Load the PDF File
+        PdfDocument PDFdoc = new PdfDocument();
+        PDFdoc.loadFromFile("./res/FactureSFR.pdf");
+        StringBuilder buffer = new StringBuilder();
+        ArrayList<BufferedImage> images = new ArrayList < BufferedImage > ();
+        //loop through the pages
+        if (PDFdoc.getPages() != null) {
+            int cpt = 0;
+            for (PdfPageBase page: (Iterable < PdfPageBase > ) PDFdoc.getPages()) {
+                //extract images from a particular page
+                if (page.extractImages() != null) {
+                    //System.out.println("Nombre d'images: " + page.extractImages().length);
+
+                    for (BufferedImage image : page.extractImages()) {
+                        //declare an int variable
+                        int index = 0;
+                        //specify the file path and name
+                        File output = new File("output/" + String.format("Image_%d.png", index++));
+                        //save image as .png file
+                        ImageIO.write(image, "PNG", output);
+                    }
+                } //else
+                //System.out.println("No image");
+                break;
+            }
+        }
+        //else
+        //System.out.println("No page");
     }
 }
