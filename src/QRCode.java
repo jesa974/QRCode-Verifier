@@ -36,6 +36,16 @@ import java.security.*;
 import java.security.cert.*;
 import java.util.*;
 
+import com.helger.xmldsig.keyselect.X509KeySelector;
+import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
+import javax.xml.crypto.dsig.XMLSignature;
+import javax.xml.crypto.dsig.XMLSignatureFactory;
+import javax.xml.crypto.dsig.dom.DOMValidateContext;
+import javax.xml.parsers.DocumentBuilderFactory;
+import java.io.FileInputStream;
+import java.nio.file.Files;
+
 import static java.lang.System.exit;
 
 public class QRCode {
@@ -178,10 +188,10 @@ public class QRCode {
     }
     
     // Récupération du 2D Doc en PNG
-    public static void extractImgFromPDF() throws IOException {
+    public static void extractImgFromPDF(String pathPDF) throws IOException {
         //Load the PDF File
         PdfDocument PDFdoc = new PdfDocument();
-        PDFdoc.loadFromFile("./res/FactureSFR.pdf");
+        PDFdoc.loadFromFile(pathPDF);
         StringBuilder buffer = new StringBuilder();
         ArrayList<BufferedImage> images = new ArrayList < BufferedImage > ();
         //loop through the pages
@@ -207,5 +217,89 @@ public class QRCode {
         }
         //else
         //System.out.println("No page");
+    }
+    
+    // Vérification de la signature de la TSL
+    private static void VerifyTSLSign(String SignTSL, X509Certificate TSLCert, String message) throws
+            Exception {
+
+        /*
+        // Méthode 1
+        XMLSignatureFactory fac = XMLSignatureFactory.getInstance("DOM");
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        dbf.setNamespaceAware(true);
+        DocumentBuilder builder = null;
+
+        try {
+            builder = dbf.newDocumentBuilder();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        File myXMLFile = new File("./res/TSL.xml");
+        byte[] ByteXML = Files.readAllBytes(myXMLFile.toPath());
+
+        Document doc = builder.parse(new ByteArrayInputStream(ByteXML));
+
+        // Find Signature element
+        NodeList nl = doc.getElementsByTagNameNS(XMLSignature.XMLNS, "Signature");
+        if (nl.getLength() == 0) {
+            throw new Exception("Cannot find Signature element");
+        }
+
+        DOMValidateContext valContext = new DOMValidateContext(new X509KeySelector(), nl.item(0));
+
+        // Unmarshal the XMLSignature.
+        XMLSignature signature = fac.unmarshalXMLSignature(valContext);
+
+        boolean isSignatureOk = signature.validate(valContext);
+
+        System.out.println("La TSL est intègre ? : " + isSignatureOk);
+        */
+
+        // Méthode 2
+        Signature sign = Signature.getInstance("SHA256withRSA");
+        sign.initVerify(TSLCert.getPublicKey());
+        File myXMLFile = new File("./res/TSL.xml");
+        byte[] ByteXML = Files.readAllBytes(myXMLFile.toPath());
+        String XML = new String(ByteXML);
+        String data = XML.substring(XML.indexOf("<tsl:SchemeInformation>"), XML.indexOf("</tsl:TrustServiceProviderList>"));
+        sign.update(data.getBytes());
+        boolean isSignatureOk = sign.verify(SignTSL.getBytes());
+        System.out.println("La TSL est intègre ? : " + isSignatureOk);
+
+
+        /*
+        // Méthode 3
+        Signature sign = Signature.getInstance("SHA256withRSA");
+        sign.initVerify(TSLCert.getPublicKey());
+        boolean isSignatureOk = sign.verify(SignTSL.getBytes());
+        //boolean isSignatureOk = sign.verify(toDerSignature(SignTSL.getBytes()));
+        System.out.println("La TSL est intègre ? : " + isSignatureOk);
+         */
+
+        /*
+        // Méthode 4
+        // Find Signature element.
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        dbf.setNamespaceAware(true);
+        Document doc = dbf.newDocumentBuilder().parse(new FileInputStream("./res/TSL.xml"));
+
+        NodeList nl = doc.getElementsByTagNameNS(XMLSignature.XMLNS, "Signature");
+        if (nl.getLength() == 0) {
+            throw new Exception("Cannot find Signature element");
+        }
+
+        // Create a DOMValidateContext and specify a KeySelector and document context.
+        DOMValidateContext valContext = new DOMValidateContext(new X509KeySelector(), nl.item(0));
+
+        // Unmarshal the XMLSignature.
+        XMLSignatureFactory fac = XMLSignatureFactory.getInstance("DOM");
+        XMLSignature signature = fac.unmarshalXMLSignature(valContext);
+
+        // Validate the XMLSignature.
+        boolean coreValidity = signature.validate(valContext);
+         */
+
     }
 }
