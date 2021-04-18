@@ -6,6 +6,8 @@
 
 QRCode-Verifier is a program that verify the integrity of a 2D Doc.
 
+**For more details about our project, a detailed report in PDF format can be found in the project under the name RenduCrypto**
+
 ---
 ## Setup
 
